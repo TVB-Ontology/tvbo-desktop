@@ -150,7 +150,7 @@ export class UserSettings {
       Also, JupyterLab theme is stored as user settings in {USER_DATA}/jupyterlab-desktop/lab/.
       An individual working-dir cannot have a different theme with common lab settings.
       */
-      theme: new Setting<ThemeType>(ThemeType.System),
+      theme: new Setting<ThemeType>(ThemeType.Light),
       syncJupyterLabTheme: new Setting<boolean>(true),
 
       defaultWorkingDirectory: new Setting<string>(''),

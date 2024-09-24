@@ -1,6 +1,6 @@
 {
   "name": "tvbo-desktop",
-  "version": "4.2.5-1",
+  "version": "0.0.1-1",
   "description": "TVB-O Desktop App",
   "main": "./build/out/main/main.js",
   "scripts": {
