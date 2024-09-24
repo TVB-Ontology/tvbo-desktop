@@ -322,34 +322,9 @@ export class JupyterApplication implements IApplication, IDisposable {
   }
 
   startup() {
-    const startupMode = userSettings.getValue(
-      SettingType.startupMode
-    ) as StartupMode;
-
-    // if launching from CLI, parse settings
-    const sessionConfig = SessionConfig.createFromArgs(this._cliArgs);
-
-    if (sessionConfig) {
-      this._sessionWindowManager.createNewLabWindow(sessionConfig);
-      return;
-    }
-
-    if (
-      startupMode === StartupMode.LastSessions &&
-      appData.sessions.length > 0
-    ) {
-      appData.sessions.forEach(sessionConfig => {
-        this._sessionWindowManager.restoreLabWindow(sessionConfig);
-      });
-      return;
-    }
-
-    if (startupMode === StartupMode.NewLocalSession) {
-      const sessionConfig = SessionConfig.createLocal();
-      this._sessionWindowManager.createNewLabWindow(sessionConfig);
-    } else {
-      this._sessionWindowManager.createNewEmptyWindow();
-    }
+    // Always create a new local session on startup
+    const sessionConfig = SessionConfig.createLocal();
+    this._sessionWindowManager.createNewLabWindow(sessionConfig);
   }
 
   handleOpenFilesOrFolders(fileOrFolders?: string[]) {
@@ -383,8 +358,8 @@ export class JupyterApplication implements IApplication, IDisposable {
 
     const dialog = new SettingsDialog(
       {
-        isDarkTheme: this._isDarkTheme,
-        startupMode: settings.getValue(SettingType.startupMode),
+        isDarkTheme: false,
+        startupMode: StartupMode.NewLocalSession,
         theme: settings.getValue(SettingType.theme),
         syncJupyterLabTheme: settings.getValue(SettingType.syncJupyterLabTheme),
         showNewsFeed: settings.getValue(SettingType.showNewsFeed),
@@ -439,7 +414,7 @@ export class JupyterApplication implements IApplication, IDisposable {
 
     const dialog = new ManagePythonEnvironmentDialog({
       envs: await this._registry.getEnvironmentList(false),
-      isDarkTheme: this._isDarkTheme,
+      isDarkTheme: false,
       defaultPythonPath: userSettings.getValue(SettingType.pythonPath),
       app: this,
       activateTab,
@@ -580,7 +555,7 @@ export class JupyterApplication implements IApplication, IDisposable {
   ): Promise<any> {
     return new Promise((resolve, reject) => {
       const dialog = new AuthDialog({
-        isDarkTheme: isDarkTheme(userSettings.getValue(SettingType.theme)),
+        isDarkTheme: false,
         host,
         parent
       });
@@ -1241,7 +1216,7 @@ export class JupyterApplication implements IApplication, IDisposable {
     type: 'updates-available' | 'error' | 'no-updates'
   ) {
     const dialog = new UpdateDialog({
-      isDarkTheme: isDarkTheme(userSettings.getValue(SettingType.theme)),
+      isDarkTheme: false,
       type
     });
 

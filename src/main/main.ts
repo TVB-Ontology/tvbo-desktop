@@ -373,7 +373,7 @@ async function updateBundledPythonEnvInstallation() {
   }
 
   const statusDialog = new ThemedWindow({
-    isDarkTheme: true,
+    isDarkTheme: false,
     title: 'Updating bundled environment installation',
     width: 400,
     height: 150,

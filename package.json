@@ -1,16 +1,17 @@
 {
-  "name": "jupyterlab-desktop",
+  "name": "tvbo-desktop",
   "version": "4.2.5-1",
-  "description": "JupyterLab Desktop",
+  "description": "TVB-O Desktop App",
   "main": "./build/out/main/main.js",
   "scripts": {
+    "install-extension": "jupyter labextension build /Users/leonmartin_bih/projects/TVB-O/tvb-ext-ontology",
     "start": "electron .",
     "test": "echo \"Error: no test specified\" && exit 1",
     "clean": "rimraf build dist",
     "watch:tsc": "tsc -w",
     "watch:assets": "node ./scripts/extract.js && node ./scripts/copyassets.js watch",
     "watch": "concurrently \"yarn watch:tsc\" \"yarn watch:assets\" ",
-    "build": "tsc && yarn bundle:preload && node ./scripts/extract.js && node ./scripts/copyassets.js",
+    "build": "yarn install-extension && tsc && yarn bundle:preload && node ./scripts/extract.js && node ./scripts/copyassets.js",
     "build:all": "yarn clean && yarn build && yarn start",
     "bundle:preload": "webpack --config webpack.preload.js",
     "extract": "node scripts/extract.js",
@@ -56,8 +57,8 @@
     "update-ufuzzy": "shx cp node_modules/@leeoniya/ufuzzy/dist/uFuzzy.iife.min.js src/assets/"
   },
   "build": {
-    "appId": "org.jupyter.jupyterlab-desktop",
-    "productName": "JupyterLab",
+    "appId": "org.tvbo.tvbo-desktop",
+    "productName": "tvbo-desktop",
     "artifactName": "${productName}.${ext}",
     "directories": {
       "buildResources": "dist-resources"
@@ -71,10 +72,8 @@
       "!workflow_env"
     ],
     "extraResources": [
-      "env_installer/jlab_server.tar.gz",
-      "env_installer/sign*.txt"
+      "env_installer/jlab_server.tar.gz"
     ],
-    "afterSign": "scripts/notarize.js",
     "linux": {
       "target": [
         "deb",
@@ -107,7 +106,7 @@
       "base": "core22",
       "environment": {
         "SHELL": "/bin/bash",
-        "GTK_USE_PORTAL":"1"
+        "GTK_USE_PORTAL": "1"
       },
       "hooks": "build/snap-hooks"
     },
@@ -156,6 +155,7 @@
       "darkModeSupport": true,
       "hardenedRuntime": true,
       "gatekeeperAssess": false,
+      "identity": false,
       "artifactName": "${productName}-${arch}.${ext}",
       "extraResources": [
         {
@@ -170,18 +170,19 @@
     }
   },
   "author": {
-    "name": "Project Jupyter",
-    "email": "project.jupyter@gmail.com",
-    "url": "http://jupyter.org"
+    "name": "Charité - Universitätsmedizin Berlin",
+    "email": "leon.martin@bih-charite.de",
+    "url": "https://www.brainsimulation.org"
   },
   "bugs": {
-    "url": "https://github.com/jupyterlab/jupyterlab-desktop/issues"
+    "url": "https://github.com/tvbo/tvbo-desktop/issues"
   },
-  "homepage": "https://github.com/jupyterlab/jupyterlab-desktop#readme",
-  "repository": "https://github.com/jupyterlab/jupyterlab-desktop",
+  "homepage": "https://github.com/tvbo/tvbo-desktop#readme",
+  "repository": "https://github.com/tvbo/tvbo-desktop",
   "license": "BSD-3-Clause",
   "devDependencies": {
     "@jupyter-notebook/web-components": "0.9.1",
+    "@leeoniya/ufuzzy": "1.0.14",
     "@types/ejs": "^3.1.0",
     "@types/js-yaml": "^4.0.3",
     "@types/node": "^14.14.31",
@@ -193,7 +194,6 @@
     "@types/yargs": "^17.0.18",
     "@typescript-eslint/eslint-plugin": "~5.28.0",
     "@typescript-eslint/parser": "~5.28.0",
-    "@leeoniya/ufuzzy": "1.0.14",
     "electron": "^27.0.2",
     "electron-builder": "^24.9.1",
     "electron-notarize": "^1.2.2",
@@ -215,7 +215,7 @@
     "stylelint-config-recommended": "^6.0.0",
     "stylelint-config-standard": "~24.0.0",
     "stylelint-prettier": "^2.0.0",
-    "typescript": "~4.2.2",
+    "typescript": "^5.6.2",
     "webpack": "^5.76.0",
     "webpack-cli": "^4.5.0"
   },
